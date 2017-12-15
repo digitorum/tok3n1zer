@@ -4,7 +4,7 @@
   "description": "Simple tokenizer fo my tasks",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "cls && mocha tests/*.js",
     "start": "cls && node ./index.js"
   },
   "repository": {
@@ -16,5 +16,9 @@
   "bugs": {
     "url": "https://github.com/digitorum/tok3n1zer/issues"
   },
-  "homepage": "https://github.com/digitorum/tok3n1zer#readme"
+  "homepage": "https://github.com/digitorum/tok3n1zer#readme",
+  "devDependencies": {
+    "chai": "^4.1.2",
+    "mocha": "^4.0.1"
+  }
 }
