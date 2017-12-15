@@ -1,7 +1,7 @@
 ﻿var Parser = require("./lib/parser.js");
 var ParserStates = require("./lib/parserStates.js");
 var parser = new Parser();
-var result = parser.parseString('Компания <strong>"ООО "<u>Рога и копыта</u>"</strong> производит рога и копыта... Цитата: <span style=\"colcor: red;\">"</span>Покупайте наших слонов! Наши слоны самые слонистые слоны в мире!" говорит о том, что советские МФ лучшие в мире!');
+var result = parser.parseString('Компания <strong>ООО &nbsp;&quot;<u>Рога & копыта</u>&raquo;</strong> производит рога и копыта... Цитата:&nbsp;<span style=\"colcor: red;\">&quot;</span>Покупайте наших слонов! Наши слоны самые слонистые слоны в мире!&quot; говорит о том, что советские МФ лучшие в мире!');
 
 console.log("Source:\n");
 console.log(result.getSourceString());
