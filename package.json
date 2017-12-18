@@ -1,0 +1,24 @@
+{
+  "name": "tok3n1zer",
+  "version": "0.1a",
+  "description": "Simple tokenizer fo my tasks",
+  "main": "index.js",
+  "scripts": {
+    "test": "cls && mocha tests/*.js",
+    "start": "cls && node ./index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/digitorum/tok3n1zer.git"
+  },
+  "author": "digitorum",
+  "license": "Unlicense",
+  "bugs": {
+    "url": "https://github.com/digitorum/tok3n1zer/issues"
+  },
+  "homepage": "https://github.com/digitorum/tok3n1zer",
+  "devDependencies": {
+    "chai": "^4.1.2",
+    "mocha": "^4.0.1"
+  }
+}
