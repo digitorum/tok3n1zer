@@ -49,6 +49,36 @@ function makeQuoteTestCases(quote, open, close) {
     makeTestCases("Три кавычки `" + quote + "` (.e<.>e.)", quote + "&mdash;<i>" + quote + "</i>&mdash;" + quote, [open, '{ENTITY}', '{TAG}', close, '{TAG}', '{ENTITY}', close].join(" "));
 }
 
+/**
+ * Сделать набор тест кейсов для проверки результата парсинга предложений
+ *
+ * @param {any} description
+ * @param {any} source
+ * @param {any} pseudocode
+ */
+function makeSentencesTestCase(description, source, pseudocode) {
+    describe(description, function () {
+        var result = parser.parseString(source);
+
+        it('Matching sentences', function (done) {
+            var errors = [];
+
+            result.getSentencesList().map(function (v, k) {
+                var pcode = v.getPseudoCode();
+
+                if (pseudocode[k] != pcode) {
+                    errors.push(pcode + " != " + pseudocode[k]);
+                }
+            });
+            if (errors.length) {
+                done(errors.join("\n"));
+            } else {
+                done();
+            }
+        });
+    });
+}
+
 //#endregion
 
 // Проверки на правильность парсинга тэгов.
@@ -91,4 +121,21 @@ describe('Кавычки', function () {
     makeQuoteTestCases("&bdquo;", "{OPEN_QUOTE}", "{OPEN_QUOTE}");
     makeQuoteTestCases("&raquo;", "{CLOSE_QUOTE}", "{CLOSE_QUOTE}");
     makeQuoteTestCases("&ldquo;", "{CLOSE_QUOTE}", "{CLOSE_QUOTE}");
+});
+
+// Проверки на правлиьность разбора предложений.
+describe('Предложения', function () {
+    makeSentencesTestCase("Одно предложение `.`", "A.", ["A {SENTENCE_POSSIBLE_END}"]);
+    makeSentencesTestCase("Одно предложение `?`", "A?", ["A {SENTENCE_POSSIBLE_END}"]);
+    makeSentencesTestCase("Одно предложение `!`", "A!", ["A {SENTENCE_POSSIBLE_END}"]);
+    makeSentencesTestCase("Одно предложение `...`", "A...", ["A {SENTENCE_POSSIBLE_END}"]);
+    makeSentencesTestCase("Два предложения `.`", "A. B.", ["A {SENTENCE_POSSIBLE_END}", "B {SENTENCE_POSSIBLE_END}"]);
+    makeSentencesTestCase("Два предложения `.`, последнее не завершается символом конца предложения", "A. B", ["A {SENTENCE_POSSIBLE_END}", "B"]);
+    makeSentencesTestCase("Два предложения `?`", "A? B.", ["A {SENTENCE_POSSIBLE_END}", "B {SENTENCE_POSSIBLE_END}"]);
+    makeSentencesTestCase("Два предложения `!`", "A! B.", ["A {SENTENCE_POSSIBLE_END}", "B {SENTENCE_POSSIBLE_END}"]);
+    makeSentencesTestCase("Два предложения `...`", "A... B.", ["A {SENTENCE_POSSIBLE_END}", "B {SENTENCE_POSSIBLE_END}"]);
+    makeSentencesTestCase("Два предложения с цитатой", "A \"B?! C...\". B.", ["A {OPEN_QUOTE} B {SENTENCE_POSSIBLE_END} C {SENTENCE_POSSIBLE_END} {CLOSE_QUOTE} {SENTENCE_POSSIBLE_END}", "B {SENTENCE_POSSIBLE_END}"]);
+    makeSentencesTestCase("Два предложения с цитатой (вложенной с одной стороны)", "A \"B?! \"C...\". B.", ["A {OPEN_QUOTE} B {SENTENCE_POSSIBLE_END} {OPEN_QUOTE} C {SENTENCE_POSSIBLE_END} {CLOSE_QUOTE} {SENTENCE_POSSIBLE_END}", "B {SENTENCE_POSSIBLE_END}"]);
+    makeSentencesTestCase("Два предложения с цитатой (вложенной)", "A \"B?! \"C...\" D!\". B.", ["A {OPEN_QUOTE} B {SENTENCE_POSSIBLE_END} {OPEN_QUOTE} C {SENTENCE_POSSIBLE_END} {CLOSE_QUOTE} D {SENTENCE_POSSIBLE_END} {CLOSE_QUOTE} {SENTENCE_POSSIBLE_END}", "B {SENTENCE_POSSIBLE_END}"]);
+    makeSentencesTestCase("Три предложения, второе с цитатой (вложенной)", "E! A \"B?! \"C...\" D!\". B.", ["E {SENTENCE_POSSIBLE_END}", "A {OPEN_QUOTE} B {SENTENCE_POSSIBLE_END} {OPEN_QUOTE} C {SENTENCE_POSSIBLE_END} {CLOSE_QUOTE} D {SENTENCE_POSSIBLE_END} {CLOSE_QUOTE} {SENTENCE_POSSIBLE_END}", "B {SENTENCE_POSSIBLE_END}"]);
 });
