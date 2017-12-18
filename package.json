@@ -1,6 +1,6 @@
 {
   "name": "tok3n1zer",
-  "version": "1.0.0",
+  "version": "0.1a",
   "description": "Simple tokenizer fo my tasks",
   "main": "index.js",
   "scripts": {
@@ -16,7 +16,7 @@
   "bugs": {
     "url": "https://github.com/digitorum/tok3n1zer/issues"
   },
-  "homepage": "https://github.com/digitorum/tok3n1zer#readme",
+  "homepage": "https://github.com/digitorum/tok3n1zer",
   "devDependencies": {
     "chai": "^4.1.2",
     "mocha": "^4.0.1"
