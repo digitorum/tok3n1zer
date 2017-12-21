@@ -80,23 +80,25 @@ function makeSentencesTestCase(description, source, pseudocode) {
 }
 
 /**
- * Сделать набор тестов по подсчету количества слов в сущностях
+ * Сделать набор тестов по подсчету количества слов или символов в сущностях
+ *
  * @param {any} description
+ * @param {any} method
  * @param {any} list
  * @param {any} results
  */
-function makeWordsCountTestCase(description, list, results) {
+function makeCountsTestCase(description, method, list, results) {
     describe(description, function () {
-        it('Matching words count', function (done) {
+        it('Matching count', function (done) {
             var errors = [];
 
             for (var i = 0; i < list.length; ++i) {
                 var item = list[i];
-                var count = item.getWordsCount();
+                var count = item[method]();
                 var expected = results[i];
 
                 if (count != expected) {
-                    errors.push(item.getSourceString() + ' words count `' + count + '` expected `' + expected + '`');
+                    errors.push(item.getSourceString() + ' count `' + count + '` expected `' + expected + '`');
                 }
             }
             if (errors.length) {
@@ -184,8 +186,21 @@ describe('Количество слов', function () {
     var text = parser.parseString("Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.");
     var html = parser.parseString("<p>Lorem ipsum dolor sit amet, consectetur <span class='strong'>adipiscing</span> elit, sed do eiusmod <br/> tempor incididunt ut labore et dolore magna aliqua.Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>");
 
-    makeWordsCountTestCase("Простой текст", [text], [36]);
-    makeWordsCountTestCase("Простой текст с разбивкой на предложения", text.getSentencesList(), [19, 17]);
-    makeWordsCountTestCase("Html", [html], [36]);
-    makeWordsCountTestCase("Html с разбивкой на предложения", html.getSentencesList(), [19, 17]);
+    makeCountsTestCase("Простой текст", 'getWordsCount', [text], [36]);
+    makeCountsTestCase("Простой текст с разбивкой на предложения", 'getWordsCount', text.getSentencesList(), [19, 17]);
+    makeCountsTestCase("Html", 'getWordsCount', [html], [36]);
+    makeCountsTestCase("Html с разбивкой на предложения", 'getWordsCount', html.getSentencesList(), [19, 17]);
+});
+
+// Количество символов
+describe('Количество символов', function () {
+    var text = parser.parseString("Привет мир! Мой мир самый лучший потому что это МОЙ мир...");
+    var text1 = parser.parseString("Привет  мир!   Мой мир самый   лучший   потому  что  это  МОЙ  мир...");
+    var html = parser.parseString("<p>Привет мир! <b>Мой</b> мир самый лучший <u style='font-weight: bold;'>потому что это МОЙ</u> мир...</p>");
+
+    makeCountsTestCase("Простой текст", 'getCharactersCount', [text], [58]);
+    makeCountsTestCase("Простой текст c лишними пробельными символами", 'getCharactersCount', [text1], [58]);
+    makeCountsTestCase("Простой текст с разбивкой на предложения", 'getCharactersCount', text.getSentencesList(), [11, 47]);
+    makeCountsTestCase("Html", 'getCharactersCount', [html], [58]);
+    makeCountsTestCase("Html с разбивкой на предложения", 'getCharactersCount', html.getSentencesList(), [11, 47]);
 });
