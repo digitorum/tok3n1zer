@@ -79,6 +79,35 @@ function makeSentencesTestCase(description, source, pseudocode) {
     });
 }
 
+/**
+ * Сделать набор тестов по подсчету количества слов в сущностях
+ * @param {any} description
+ * @param {any} list
+ * @param {any} results
+ */
+function makeWordsCountTestCase(description, list, results) {
+    describe(description, function () {
+        it('Matching words count', function (done) {
+            var errors = [];
+
+            for (var i = 0; i < list.length; ++i) {
+                var item = list[i];
+                var count = item.getWordsCount();
+                var expected = results[i];
+
+                if (count != expected) {
+                    errors.push(item.getSourceString() + ' words count `' + count + '` expected `' + expected + '`');
+                }
+            }
+            if (errors.length) {
+                done(errors.join("\n"));
+            } else {
+                done();
+            }
+        });
+    });
+}
+
 //#endregion
 
 // Проверки на правильность парсинга тэгов.
@@ -148,4 +177,15 @@ describe('Предложения', function () {
     makeSentencesTestCase("Два предложения с цитатой (вложенной с одной стороны)", "A \"B?! \"C...\". B.", ["A {OPEN_QUOTE} B {SENTENCE_POSSIBLE_END} {OPEN_QUOTE} C {SENTENCE_POSSIBLE_END} {CLOSE_QUOTE} {SENTENCE_POSSIBLE_END}", "B {SENTENCE_POSSIBLE_END}"]);
     makeSentencesTestCase("Два предложения с цитатой (вложенной)", "A \"B?! \"C...\" D!\". B.", ["A {OPEN_QUOTE} B {SENTENCE_POSSIBLE_END} {OPEN_QUOTE} C {SENTENCE_POSSIBLE_END} {CLOSE_QUOTE} D {SENTENCE_POSSIBLE_END} {CLOSE_QUOTE} {SENTENCE_POSSIBLE_END}", "B {SENTENCE_POSSIBLE_END}"]);
     makeSentencesTestCase("Три предложения, второе с цитатой (вложенной)", "E! A \"B?! \"C...\" D!\". B.", ["E {SENTENCE_POSSIBLE_END}", "A {OPEN_QUOTE} B {SENTENCE_POSSIBLE_END} {OPEN_QUOTE} C {SENTENCE_POSSIBLE_END} {CLOSE_QUOTE} D {SENTENCE_POSSIBLE_END} {CLOSE_QUOTE} {SENTENCE_POSSIBLE_END}", "B {SENTENCE_POSSIBLE_END}"]);
+});
+
+// Количество слов
+describe('Количество слов', function () {
+    var text = parser.parseString("Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.");
+    var html = parser.parseString("<p>Lorem ipsum dolor sit amet, consectetur <span class='strong'>adipiscing</span> elit, sed do eiusmod <br/> tempor incididunt ut labore et dolore magna aliqua.Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>");
+
+    makeWordsCountTestCase("Простой текст", [text], [36]);
+    makeWordsCountTestCase("Простой текст с разбивкой на предложения", text.getSentencesList(), [19, 17]);
+    makeWordsCountTestCase("Html", [html], [36]);
+    makeWordsCountTestCase("Html с разбивкой на предложения", html.getSentencesList(), [19, 17]);
 });
