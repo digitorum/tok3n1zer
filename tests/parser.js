@@ -31,6 +31,9 @@ function makeTestCases(description, source, pseudocode) {
  * @param {any} close
  */
 function makeQuoteTestCases(quote, open, close) {
+    open = open || "{OPEN_QUOTE}";
+    close = close || "{CLOSE_QUOTE}";
+
     makeTestCases("Кавычка `" + quote + "`", quote, open);
     makeTestCases("Кавычка `" + quote + "` (обернутая в тэг)", "<i>" + quote + "</i>", ['{TAG}', open, '{TAG}'].join(" "));
     makeTestCases("Две кавычки `" + quote + "` (первая обернута в тэг)", "<i>" + quote + "</i>" + quote, ['{TAG}', open, '{TAG}', close].join(" "));
@@ -146,12 +149,12 @@ describe('Разбор HTML и XHTML', function () {
 describe('Кавычки', function () {
     makeTestCases("Одинарная кавычка", "'", "{CHAR}");
     makeTestCases("Две одинарные кавычки", "'", "{CHAR}");
-    makeQuoteTestCases("\"", "{OPEN_QUOTE}", "{CLOSE_QUOTE}");
-    makeQuoteTestCases("&quot;", "{OPEN_QUOTE}", "{CLOSE_QUOTE}");
-    makeQuoteTestCases("&laquo;", "{OPEN_QUOTE}", "{OPEN_QUOTE}");
-    makeQuoteTestCases("&bdquo;", "{OPEN_QUOTE}", "{OPEN_QUOTE}");
-    makeQuoteTestCases("&raquo;", "{CLOSE_QUOTE}", "{CLOSE_QUOTE}");
-    makeQuoteTestCases("&ldquo;", "{CLOSE_QUOTE}", "{CLOSE_QUOTE}");
+    makeQuoteTestCases("\"");
+    makeQuoteTestCases("&quot;");
+    makeQuoteTestCases("&laquo;");
+    makeQuoteTestCases("&bdquo;");
+    makeQuoteTestCases("&raquo;");
+    makeQuoteTestCases("&ldquo;");
 });
 
 // Проверки на правлиьность разбора предложений.
