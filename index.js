@@ -2,9 +2,9 @@
 var ParserStates = require("./lib/parserStates.js");
 var parser = new Parser();
 var result = parser.setAbbreviations([
-    "т. к.",
-    "т. о."
-]).parseString('Я взял с собой зонтик, <b>т.</b> к. на улице шёл дождь. Компания <strong>ООО &nbsp;&quot;<u>Рога & копыта</u>&raquo;</strong> производит рога и копыта... Цитата:&nbsp;<span style=\"colcor: red;\">&quot;</span>Покупайте наших слонов! Наши слоны самые слонистые слоны в мире!&quot; говорит о том, что советские МФ лучшие в мире!');
+    "a",
+    "a ab"
+]).parseString('Hello world A and world A Ab');
 
 console.log("Source:\n");
 console.log(result.getSourceString());
