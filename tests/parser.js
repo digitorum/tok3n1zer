@@ -164,31 +164,31 @@ describe('Кавычки', function () {
 
 // Проверки на правлиьность разбора предложений.
 describe('Предложения', function () {
-    makeSentencesTestCase("Одно предложение `.`", "A.", ["A {SENTENCE_POSSIBLE_END}"]);
-    makeSentencesTestCase("Одно предложение `?`", "A?", ["A {SENTENCE_POSSIBLE_END}"]);
-    makeSentencesTestCase("Одно предложение `!`", "A!", ["A {SENTENCE_POSSIBLE_END}"]);
-    makeSentencesTestCase("Одно предложение `...`", "A...", ["A {SENTENCE_POSSIBLE_END}"]);
-    makeSentencesTestCase("Одно предложение `.` со скобками `[`", "A [B.].", ["A {BRACKET} B {SENTENCE_POSSIBLE_END} {BRACKET} {SENTENCE_POSSIBLE_END}"]);
-    makeSentencesTestCase("Одно предложение `.` со скобками `(`", "A (B.).", ["A {BRACKET} B {SENTENCE_POSSIBLE_END} {BRACKET} {SENTENCE_POSSIBLE_END}"]);
-    makeSentencesTestCase("Одно предложение `.` с вложенными скобками `(->(`", "A ((B.) C.).", ["A {BRACKET} {BRACKET} B {SENTENCE_POSSIBLE_END} {BRACKET} C {SENTENCE_POSSIBLE_END} {BRACKET} {SENTENCE_POSSIBLE_END}"]);
-    makeSentencesTestCase("Одно предложение `.` с вложенными скобками `(->[`", "A ([B.] C.).", ["A {BRACKET} {BRACKET} B {SENTENCE_POSSIBLE_END} {BRACKET} C {SENTENCE_POSSIBLE_END} {BRACKET} {SENTENCE_POSSIBLE_END}"]);
-    makeSentencesTestCase("Одно предложение `.` с вложенными скобками `[->[`", "A [[B.] C.].", ["A {BRACKET} {BRACKET} B {SENTENCE_POSSIBLE_END} {BRACKET} C {SENTENCE_POSSIBLE_END} {BRACKET} {SENTENCE_POSSIBLE_END}"]);
-    makeSentencesTestCase("Одно предложение `.` с вложенными скобками `[->(`", "A [(B.) C.].", ["A {BRACKET} {BRACKET} B {SENTENCE_POSSIBLE_END} {BRACKET} C {SENTENCE_POSSIBLE_END} {BRACKET} {SENTENCE_POSSIBLE_END}"]);
-    makeSentencesTestCase("Одно предложение `.` с вложенными скобками `[->(->[`", "A [(B. []) C.].", ["A {BRACKET} {BRACKET} B {SENTENCE_POSSIBLE_END} {BRACKET} {BRACKET} {BRACKET} C {SENTENCE_POSSIBLE_END} {BRACKET} {SENTENCE_POSSIBLE_END}"]);
-    makeSentencesTestCase("Одно предложение `.` с вложенными скобками `(->[->(`", "A ([B. ()] C.).", ["A {BRACKET} {BRACKET} B {SENTENCE_POSSIBLE_END} {BRACKET} {BRACKET} {BRACKET} C {SENTENCE_POSSIBLE_END} {BRACKET} {SENTENCE_POSSIBLE_END}"]);
-    makeSentencesTestCase("Одно предложение `.` с вложенными скобками `(->\"[->(\"` и цитатой.", "A (\"[B. \"()] C.\").", ["A {BRACKET} {OPEN_QUOTE} {BRACKET} B {SENTENCE_POSSIBLE_END} {OPEN_QUOTE} {BRACKET} {BRACKET} {BRACKET} C {SENTENCE_POSSIBLE_END} {CLOSE_QUOTE} {BRACKET} {SENTENCE_POSSIBLE_END}"]);
-    makeSentencesTestCase("Одно предложение `.` с вложенными скобками `[->\"(->[\"` и цитатой.", "A [\"(B. \"[]) C.\"].", ["A {BRACKET} {OPEN_QUOTE} {BRACKET} B {SENTENCE_POSSIBLE_END} {OPEN_QUOTE} {BRACKET} {BRACKET} {BRACKET} C {SENTENCE_POSSIBLE_END} {CLOSE_QUOTE} {BRACKET} {SENTENCE_POSSIBLE_END}"]);
-    makeSentencesTestCase("Два предложения `.`", "A. B.", ["A {SENTENCE_POSSIBLE_END}", "B {SENTENCE_POSSIBLE_END}"]);
-    makeSentencesTestCase("Два предложения `.`, последнее не завершается символом конца предложения", "A. B", ["A {SENTENCE_POSSIBLE_END}", "B"]);
-    makeSentencesTestCase("Два предложения `?`", "A? B.", ["A {SENTENCE_POSSIBLE_END}", "B {SENTENCE_POSSIBLE_END}"]);
-    makeSentencesTestCase("Два предложения `!`", "A! B.", ["A {SENTENCE_POSSIBLE_END}", "B {SENTENCE_POSSIBLE_END}"]);
-    makeSentencesTestCase("Два предложения `...`", "A... B.", ["A {SENTENCE_POSSIBLE_END}", "B {SENTENCE_POSSIBLE_END}"]);
-    makeSentencesTestCase("Два предложения с цитатой", "A \"B?! C...\". B.", ["A {OPEN_QUOTE} B {SENTENCE_POSSIBLE_END} C {SENTENCE_POSSIBLE_END} {CLOSE_QUOTE} {SENTENCE_POSSIBLE_END}", "B {SENTENCE_POSSIBLE_END}"]);
-    makeSentencesTestCase("Два предложения с цитатой (вложенной с одной стороны)", "A \"B?! \"C...\". B.", ["A {OPEN_QUOTE} B {SENTENCE_POSSIBLE_END} {OPEN_QUOTE} C {SENTENCE_POSSIBLE_END} {CLOSE_QUOTE} {SENTENCE_POSSIBLE_END}", "B {SENTENCE_POSSIBLE_END}"]);
-    makeSentencesTestCase("Два предложения с цитатой (вложенной)", "A \"B?! \"C...\" D!\". B.", ["A {OPEN_QUOTE} B {SENTENCE_POSSIBLE_END} {OPEN_QUOTE} C {SENTENCE_POSSIBLE_END} {CLOSE_QUOTE} D {SENTENCE_POSSIBLE_END} {CLOSE_QUOTE} {SENTENCE_POSSIBLE_END}", "B {SENTENCE_POSSIBLE_END}"]);
-    makeSentencesTestCase("Три предложения, второе с цитатой (вложенной)", "E! A \"B?! \"C...\" D!\". B.", ["E {SENTENCE_POSSIBLE_END}", "A {OPEN_QUOTE} B {SENTENCE_POSSIBLE_END} {OPEN_QUOTE} C {SENTENCE_POSSIBLE_END} {CLOSE_QUOTE} D {SENTENCE_POSSIBLE_END} {CLOSE_QUOTE} {SENTENCE_POSSIBLE_END}", "B {SENTENCE_POSSIBLE_END}"]);
-    makeSentencesTestCase("Одно предложение с сокращением", "A т. к. B.", ["A т. к. B {SENTENCE_POSSIBLE_END}"]);
-    makeSentencesTestCase("Одно предложение с сокращениями", "A т. к. B т. о. С.", ["A т. к. B т. о. С {SENTENCE_POSSIBLE_END}"]);
+    makeSentencesTestCase("Одно предложение `.`", "a.", ["a {SENTENCE_POSSIBLE_END}"]);
+    makeSentencesTestCase("Одно предложение `?`", "a?", ["a {SENTENCE_POSSIBLE_END}"]);
+    makeSentencesTestCase("Одно предложение `!`", "a!", ["a {SENTENCE_POSSIBLE_END}"]);
+    makeSentencesTestCase("Одно предложение `...`", "a...", ["a {SENTENCE_POSSIBLE_END}"]);
+    makeSentencesTestCase("Одно предложение `.` со скобками `[`", "a [b.].", ["a {BRACKET} b {SENTENCE_POSSIBLE_END} {BRACKET} {SENTENCE_POSSIBLE_END}"]);
+    makeSentencesTestCase("Одно предложение `.` со скобками `(`", "a (b.).", ["a {BRACKET} b {SENTENCE_POSSIBLE_END} {BRACKET} {SENTENCE_POSSIBLE_END}"]);
+    makeSentencesTestCase("Одно предложение `.` с вложенными скобками `(->(`", "a ((b.) c.).", ["a {BRACKET} {BRACKET} b {SENTENCE_POSSIBLE_END} {BRACKET} c {SENTENCE_POSSIBLE_END} {BRACKET} {SENTENCE_POSSIBLE_END}"]);
+    makeSentencesTestCase("Одно предложение `.` с вложенными скобками `(->[`", "a ([b.] c.).", ["a {BRACKET} {BRACKET} b {SENTENCE_POSSIBLE_END} {BRACKET} c {SENTENCE_POSSIBLE_END} {BRACKET} {SENTENCE_POSSIBLE_END}"]);
+    makeSentencesTestCase("Одно предложение `.` с вложенными скобками `[->[`", "a [[b.] c.].", ["a {BRACKET} {BRACKET} b {SENTENCE_POSSIBLE_END} {BRACKET} c {SENTENCE_POSSIBLE_END} {BRACKET} {SENTENCE_POSSIBLE_END}"]);
+    makeSentencesTestCase("Одно предложение `.` с вложенными скобками `[->(`", "a [(b.) c.].", ["a {BRACKET} {BRACKET} b {SENTENCE_POSSIBLE_END} {BRACKET} c {SENTENCE_POSSIBLE_END} {BRACKET} {SENTENCE_POSSIBLE_END}"]);
+    makeSentencesTestCase("Одно предложение `.` с вложенными скобками `[->(->[`", "a [(b. []) c.].", ["a {BRACKET} {BRACKET} b {SENTENCE_POSSIBLE_END} {BRACKET} {BRACKET} {BRACKET} c {SENTENCE_POSSIBLE_END} {BRACKET} {SENTENCE_POSSIBLE_END}"]);
+    makeSentencesTestCase("Одно предложение `.` с вложенными скобками `(->[->(`", "a ([b. ()] c.).", ["a {BRACKET} {BRACKET} b {SENTENCE_POSSIBLE_END} {BRACKET} {BRACKET} {BRACKET} c {SENTENCE_POSSIBLE_END} {BRACKET} {SENTENCE_POSSIBLE_END}"]);
+    makeSentencesTestCase("Одно предложение `.` с вложенными скобками `(->\"[->(\"` и цитатой.", "a (\"[b. \"()] c.\").", ["a {BRACKET} {OPEN_QUOTE} {BRACKET} b {SENTENCE_POSSIBLE_END} {OPEN_QUOTE} {BRACKET} {BRACKET} {BRACKET} c {SENTENCE_POSSIBLE_END} {CLOSE_QUOTE} {BRACKET} {SENTENCE_POSSIBLE_END}"]);
+    makeSentencesTestCase("Одно предложение `.` с вложенными скобками `[->\"(->[\"` и цитатой.", "a [\"(b. \"[]) c.\"].", ["a {BRACKET} {OPEN_QUOTE} {BRACKET} b {SENTENCE_POSSIBLE_END} {OPEN_QUOTE} {BRACKET} {BRACKET} {BRACKET} c {SENTENCE_POSSIBLE_END} {CLOSE_QUOTE} {BRACKET} {SENTENCE_POSSIBLE_END}"]);
+    makeSentencesTestCase("Два предложения `.`", "a. b.", ["a {SENTENCE_POSSIBLE_END}", "b {SENTENCE_POSSIBLE_END}"]);
+    makeSentencesTestCase("Два предложения `.`, последнее не завершается символом конца предложения", "a. b", ["a {SENTENCE_POSSIBLE_END}", "b"]);
+    makeSentencesTestCase("Два предложения `?`", "a? b.", ["a {SENTENCE_POSSIBLE_END}", "b {SENTENCE_POSSIBLE_END}"]);
+    makeSentencesTestCase("Два предложения `!`", "a! b.", ["a {SENTENCE_POSSIBLE_END}", "b {SENTENCE_POSSIBLE_END}"]);
+    makeSentencesTestCase("Два предложения `...`", "a... b.", ["a {SENTENCE_POSSIBLE_END}", "b {SENTENCE_POSSIBLE_END}"]);
+    makeSentencesTestCase("Два предложения с цитатой", "a \"b?! c...\". b.", ["a {OPEN_QUOTE} b {SENTENCE_POSSIBLE_END} c {SENTENCE_POSSIBLE_END} {CLOSE_QUOTE} {SENTENCE_POSSIBLE_END}", "b {SENTENCE_POSSIBLE_END}"]);
+    makeSentencesTestCase("Два предложения с цитатой (вложенной с одной стороны)", "a \"b?! \"c...\". b.", ["a {OPEN_QUOTE} b {SENTENCE_POSSIBLE_END} {OPEN_QUOTE} c {SENTENCE_POSSIBLE_END} {CLOSE_QUOTE} {SENTENCE_POSSIBLE_END}", "b {SENTENCE_POSSIBLE_END}"]);
+    makeSentencesTestCase("Два предложения с цитатой (вложенной)", "a \"b?! \"c...\" d!\". b.", ["a {OPEN_QUOTE} b {SENTENCE_POSSIBLE_END} {OPEN_QUOTE} c {SENTENCE_POSSIBLE_END} {CLOSE_QUOTE} d {SENTENCE_POSSIBLE_END} {CLOSE_QUOTE} {SENTENCE_POSSIBLE_END}", "b {SENTENCE_POSSIBLE_END}"]);
+    makeSentencesTestCase("Три предложения, второе с цитатой (вложенной)", "E! a \"b?! \"c...\" d!\". b.", ["E {SENTENCE_POSSIBLE_END}", "a {OPEN_QUOTE} b {SENTENCE_POSSIBLE_END} {OPEN_QUOTE} c {SENTENCE_POSSIBLE_END} {CLOSE_QUOTE} d {SENTENCE_POSSIBLE_END} {CLOSE_QUOTE} {SENTENCE_POSSIBLE_END}", "b {SENTENCE_POSSIBLE_END}"]);
+    makeSentencesTestCase("Одно предложение с сокращением", "a т. к. b.", ["a т. к. b {SENTENCE_POSSIBLE_END}"]);
+    makeSentencesTestCase("Одно предложение с сокращениями", "a т. к. b т. о. С.", ["a т. к. b т. о. С {SENTENCE_POSSIBLE_END}"]);
 });
 
 // Количество слов
