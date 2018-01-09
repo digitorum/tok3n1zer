@@ -1,6 +1,11 @@
 ﻿var assert = require('assert');
 var parser = new (require('../lib/parser.js'));
 
+parser.setAbbreviations([
+    "т. к.",
+    "т. о."
+]);
+
 //#region Генераторы тестов
 
 /**
@@ -182,6 +187,8 @@ describe('Предложения', function () {
     makeSentencesTestCase("Два предложения с цитатой (вложенной с одной стороны)", "A \"B?! \"C...\". B.", ["A {OPEN_QUOTE} B {SENTENCE_POSSIBLE_END} {OPEN_QUOTE} C {SENTENCE_POSSIBLE_END} {CLOSE_QUOTE} {SENTENCE_POSSIBLE_END}", "B {SENTENCE_POSSIBLE_END}"]);
     makeSentencesTestCase("Два предложения с цитатой (вложенной)", "A \"B?! \"C...\" D!\". B.", ["A {OPEN_QUOTE} B {SENTENCE_POSSIBLE_END} {OPEN_QUOTE} C {SENTENCE_POSSIBLE_END} {CLOSE_QUOTE} D {SENTENCE_POSSIBLE_END} {CLOSE_QUOTE} {SENTENCE_POSSIBLE_END}", "B {SENTENCE_POSSIBLE_END}"]);
     makeSentencesTestCase("Три предложения, второе с цитатой (вложенной)", "E! A \"B?! \"C...\" D!\". B.", ["E {SENTENCE_POSSIBLE_END}", "A {OPEN_QUOTE} B {SENTENCE_POSSIBLE_END} {OPEN_QUOTE} C {SENTENCE_POSSIBLE_END} {CLOSE_QUOTE} D {SENTENCE_POSSIBLE_END} {CLOSE_QUOTE} {SENTENCE_POSSIBLE_END}", "B {SENTENCE_POSSIBLE_END}"]);
+    makeSentencesTestCase("Одно предложение с сокращением", "A т. к. B.", ["A т. к. B {SENTENCE_POSSIBLE_END}"]);
+    makeSentencesTestCase("Одно предложение с сокращениями", "A т. к. B т. о. С.", ["A т. к. B т. о. С {SENTENCE_POSSIBLE_END}"]);
 });
 
 // Количество слов
@@ -196,14 +203,28 @@ describe('Количество слов', function () {
 });
 
 // Количество символов
-describe('Количество символов', function () {
+describe('Количество символов, длина и смещение', function () {
     var text = parser.parseString("Привет мир! Мой мир самый лучший потому что это МОЙ мир...");
     var text1 = parser.parseString("Привет  мир!   Мой мир самый   лучший   потому  что  это  МОЙ  мир...");
+    var text2 = parser.parseString("Привет  мир!   Мой&nbsp;мир&nbsp;самый   лучший   потому  что  это  МОЙ  мир...");
     var html = parser.parseString("<p>Привет мир! <b>Мой</b> мир самый лучший <u style='font-weight: bold;'>потому что это МОЙ</u> мир...</p>");
+    var html1 = parser.parseString("<p>Привет мир! <b>Мой</b> мир самый лучший <u style='font-weight: bold;'>потому что это МОЙ</u> мир... Третье предложение</p>");
 
     makeCountsTestCase("Простой текст", 'getCharactersCount', [text], [58]);
+    makeCountsTestCase("Простой текст (длина)", 'getLength', [text], [58]);
+    makeCountsTestCase("Простой текст (смещение)", 'getOffset', [text], [0]);
     makeCountsTestCase("Простой текст c лишними пробельными символами", 'getCharactersCount', [text1], [58]);
+    makeCountsTestCase("Простой текст c лишними пробельными символами (длина)", 'getLength', [text1], [69]);
+    makeCountsTestCase("Простой текст c лишними пробельными символами и entities", 'getCharactersCount', [text2], [58]);
+    makeCountsTestCase("Простой текст c лишними пробельными символами и entities (длина)", 'getLength', [text2], [79]);
     makeCountsTestCase("Простой текст с разбивкой на предложения", 'getCharactersCount', text.getSentencesList(), [11, 47]);
+    makeCountsTestCase("Простой текст с разбивкой на предложения (длина)", 'getLength', text.getSentencesList(), [11, 47]);
+    makeCountsTestCase("Простой текст с разбивкой на предложения (смещение)", 'getOffset', text.getSentencesList(), [0, 11]);
     makeCountsTestCase("Html", 'getCharactersCount', [html], [58]);
-    makeCountsTestCase("Html с разбивкой на предложения", 'getCharactersCount', html.getSentencesList(), [11, 47]);
+    makeCountsTestCase("Html (длина)", 'getLength', [html], [106]);
+    makeCountsTestCase("Html с разбивкой на предложения (2)", 'getCharactersCount', html.getSentencesList(), [11, 47]);
+    makeCountsTestCase("Html с разбивкой на предложения (2) (длина)", 'getLength', html.getSentencesList(), [14, 92]);
+    makeCountsTestCase("Html с разбивкой на предложения (3) (длина)", 'getLength', html1.getSentencesList(), [14, 88, 23]);
+    makeCountsTestCase("Html с разбивкой на предложения (2) (смещение)", 'getOffset', html.getSentencesList(), [0, 14]);
+    makeCountsTestCase("Html с разбивкой на предложения (3) (смещение)", 'getOffset', html1.getSentencesList(), [0, 14, 102]);
 });
