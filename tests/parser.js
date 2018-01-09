@@ -1,6 +1,11 @@
 ﻿var assert = require('assert');
 var parser = new (require('../lib/parser.js'));
 
+parser.setAbbreviations([
+    "т. к.",
+    "т. о."
+]);
+
 //#region Генераторы тестов
 
 /**
@@ -182,6 +187,8 @@ describe('Предложения', function () {
     makeSentencesTestCase("Два предложения с цитатой (вложенной с одной стороны)", "A \"B?! \"C...\". B.", ["A {OPEN_QUOTE} B {SENTENCE_POSSIBLE_END} {OPEN_QUOTE} C {SENTENCE_POSSIBLE_END} {CLOSE_QUOTE} {SENTENCE_POSSIBLE_END}", "B {SENTENCE_POSSIBLE_END}"]);
     makeSentencesTestCase("Два предложения с цитатой (вложенной)", "A \"B?! \"C...\" D!\". B.", ["A {OPEN_QUOTE} B {SENTENCE_POSSIBLE_END} {OPEN_QUOTE} C {SENTENCE_POSSIBLE_END} {CLOSE_QUOTE} D {SENTENCE_POSSIBLE_END} {CLOSE_QUOTE} {SENTENCE_POSSIBLE_END}", "B {SENTENCE_POSSIBLE_END}"]);
     makeSentencesTestCase("Три предложения, второе с цитатой (вложенной)", "E! A \"B?! \"C...\" D!\". B.", ["E {SENTENCE_POSSIBLE_END}", "A {OPEN_QUOTE} B {SENTENCE_POSSIBLE_END} {OPEN_QUOTE} C {SENTENCE_POSSIBLE_END} {CLOSE_QUOTE} D {SENTENCE_POSSIBLE_END} {CLOSE_QUOTE} {SENTENCE_POSSIBLE_END}", "B {SENTENCE_POSSIBLE_END}"]);
+    makeSentencesTestCase("Одно предложение с сокращением", "A т. к. B.", ["A т. к. B {SENTENCE_POSSIBLE_END}"]);
+    makeSentencesTestCase("Одно предложение с сокращениями", "A т. к. B т. о. С.", ["A т. к. B т. о. С {SENTENCE_POSSIBLE_END}"]);
 });
 
 // Количество слов
