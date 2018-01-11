@@ -1,6 +1,6 @@
 {
   "name": "tok3n1zer",
-  "version": "0.1.3a",
+  "version": "0.2.1a",
   "description": "Simple tokenizer fo my tasks",
   "main": "index.js",
   "scripts": {
